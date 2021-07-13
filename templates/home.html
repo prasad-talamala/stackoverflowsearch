@@ -1,0 +1,325 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+<title>Stack Overflow | Search</title>
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div id="message" class="container">
+        <div
+                {% if message.tags %} class=" alert alert-{{ message.tags }} alert-dismissible fade show" {% endif %}
+                role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %} {% endif %}
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <h1>Stack Overflow Search <a href="{% url 'home' %}"><i class="fa fa-refresh" aria-hidden="true"></i></a></h1>
+    <form action="search">
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-page">page</label></td>
+                            <td><input class="form-control" id="param-page" type="text" name="page"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-pagesize">pagesize</label></td>
+                            <td><input class="form-control" id="param-pagesize" type="text"
+                                       name="pagesize">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-fromdate">fromdate</label></td>
+                            <td><input class="form-control" id="param-fromdate" type="date"
+                                       name="fromdate"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-todate">todate</label></td>
+                            <td><input class="form-control" id="param-todate" type="date"
+                                       name="todate"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-order">order</label></td>
+                            <td><select name="order" id="param-order" class="form-control">
+                                <option selected>desc</option>
+                                <option>asc</option>
+                            </select></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-min">min</label></td>
+                            <td><input class="form-control" id="param-min" type="date"
+                                       name="min">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-max">max</label></td>
+                            <td><input class="form-control" id="param-max" type="date"
+                                       name="max">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-sort">sort</label></td>
+                            <td><select name="sort" id="param-sort" class="form-control">
+                                <option selected>activity</option>
+                                <option>votes</option>
+                                <option>creation</option>
+                                <option>relevance</option>
+                            </select></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-q">q</label></td>
+                            <td><input class="form-control" id="param-q" type="text" name="q"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-accepted">accepted</label></td>
+                            <td><select name="accepted" id="param-accepted" class="form-control">
+                                <option selected disabled>----select----</option>
+                                <option>True</option>
+                                <option>False</option>
+                            </select></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-answers">answers</label></td>
+                            <td><input class="form-control" id="param-answers" type="text"
+                                       name="answers">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-body">body</label></td>
+                            <td><input class="form-control" id="param-body" type="text" name="body"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-closed">closed</label></td>
+                            <td><select name="closed" id="param-closed" class="form-control">
+                                <option selected disabled>----select----</option>
+                                <option>True</option>
+                                <option>False</option>
+                            </select></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-migrated">migrated</label></td>
+                            <td><select name="migrated" id="param-migrated" class="form-control">
+                                <option selected disabled>----select----</option>
+                                <option>True</option>
+                                <option>False</option>
+                            </select></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-notice">notice</label></td>
+                            <td><select name="notice" id="param-notice" class="form-control">
+                                <option selected disabled>----select----</option>
+                                <option>True</option>
+                                <option>False</option>
+                            </select></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-nottagged">nottagged</label></td>
+                            <td><input class="form-control" id="param-nottagged" type="text"
+                                       name="nottagged">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-tagged">tagged</label></td>
+                            <td><input class="form-control" id="param-tagged" type="text" name="tagged">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-title">title</label></td>
+                            <td><input class="form-control" id="param-title" type="text" name="title">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-user">user</label></td>
+                            <td><input class="form-control" id="param-user" type="text" name="user"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-url">url</label></td>
+                            <td><input class="form-control" id="param-url" type="text" name="url"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-views">views</label></td>
+                            <td><input class="form-control" id="param-views" type="text" name="views">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="parameter">
+                        <tbody>
+                        <tr>
+                            <td class="label-holder"><label for="param-wiki">wiki</label></td>
+                            <td><select name="wiki" id="param-wiki" class="form-control">
+                                <option selected disabled>----select----</option>
+                                <option>True</option>
+                                <option>False</option>
+                            </select></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="form-group">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    $(document).ready(function() {
+        setTimeout(function(){
+            $('#message').fadeOut('slow')
+        }, 4000)
+    });
+
+</script>
