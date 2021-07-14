@@ -29,8 +29,6 @@ def add_pagination(request, all_data):
 
 
 def home(request):
-    if not request.session.session_key:
-        messages.warning(request, "Session Expired!")
     return render(request, "home.html")
 
 
@@ -67,12 +65,15 @@ def search(request):
     else:
         f = obj
 
+    error_message = None
+
     if isinstance(f, list):
         final_data = add_pagination(request, f)
     else:
         final_data = []
+        error_message = f.json()['error_message']
     context = {
         'data': final_data,
-        'error': f.json()['error_message']
+        'error': error_message
     }
     return render(request, "search_results.html", context=context)
